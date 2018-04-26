@@ -29,49 +29,48 @@ class Table extends Component {
     // Construct columns from Data
     BuildColumns( data ) {
         
-        if ( typeof data === "undefined" || typeof data != "Array" ) {
-            return false;
-        }
-
         let columns = [];
-        data.forEach((key, id)=>{
-            if ( key === 'location_1' ) {
-                columns.push({
-                    Header: 'location_1.type',
-                    accessor: 'location_1.type'
-                })
-                columns.push({
-                    Header: 'location_1.coordinates',
-                    id:'location_1.coordinates',
-                    accessor: data => {
-                        let output = [];
-                        data.location_1.coordinates.forEach((c, key) => {
-                            output.push(c);
-                        });
-                        return output.join(', ');
-                    }
-                })
-            }
-            else {
-                columns.push({
-                    Header: key,
-                    accessor: key
-                })
-            }
-        })
+
+        if ( typeof data === Array || typeof data === Object ) {
+            data.forEach((key, id)=>{
+                if ( key === 'location_1' ) {
+                    columns.push({
+                        Header: 'location_1.type',
+                        accessor: 'location_1.type'
+                    })
+                    columns.push({
+                        Header: 'location_1.coordinates',
+                        id:'location_1.coordinates',
+                        accessor: data => {
+                            let output = [];
+                            data.location_1.coordinates.forEach((c, key) => {
+                                output.push(c);
+                            });
+                            return output.join(', ');
+                        }
+                    })
+                }
+                else {
+                    columns.push({
+                        Header: key,
+                        accessor: key
+                    })
+                }
+            })                
+        }
 
         return columns;
     }
 
     componentDidMount() {
-        
+
         // Set if we get some data
-        if ( typeof this.props.data !== "undefined" && this.props.data !== [] ) {
+        if ( typeof this.props.data !== "undefined" ) {
             this.setState({dataTable: this.props.data})
         }
 
         // Set if we get some columns
-        if ( typeof this.props.columns !== "undefined" && this.props.columns !== [] ) {
+        if ( typeof this.props.columns !== "undefined" ) {
             this.setState({columns: this.props.columns})
         }
 
@@ -82,7 +81,7 @@ class Table extends Component {
                 return false;
             } else {
                 // Else let's build columns
-                this.BuildColumns( this.state.dataTable );
+                this.setState({columns: this.BuildColumns( this.state.dataTable )})
             }
         } else {
             // Else going to set default data

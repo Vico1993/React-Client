@@ -10,13 +10,13 @@ it('renders without data', () => {
 
 it('if BuildCollumns don\'t receive parameters', () => {
     const tableComponent = shallow(<Table />);
-    expect(tableComponent.instance().BuildColumns()).toEqual(false);
+    expect(tableComponent.instance().BuildColumns()).toEqual([]);
 });
 
 it('if BuildCollumns receive wrong parameter', () => {
     const tableComponent = shallow(<Table />);
-    expect(tableComponent.instance().BuildColumns("")).toEqual(false);
-    expect(tableComponent.instance().BuildColumns(1)).toEqual(false);
+    expect(tableComponent.instance().BuildColumns("")).toEqual([]);
+    expect(tableComponent.instance().BuildColumns(1)).toEqual([]);
 });
 
 it('renders with props', () => {
