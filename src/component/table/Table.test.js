@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import Table from './Table';
 
 it('renders without data', () => {
@@ -28,6 +28,6 @@ it('renders with props', () => {
         "Lastname": "Doe"
     }];
 
-    const tableComponent = shallow(<Table data={data}/>);
-    expect(tableComponent.find('ReactTable').length).toEqual(1);
+    const tableComponent = mount(<Table data={data}/>);
+    expect(tableComponent.find('.rt-tr.-padRow').length).toEqual(18);
 });

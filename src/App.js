@@ -3,6 +3,14 @@ import React, { Component } from 'react';
 import Table from './component/table/Table'
 import './App.css';
 
+const data = [{
+  "firstname": "Victor",
+  "Lastname": "Piolin"
+}, {
+  "firstname": "John",
+  "Lastname": "Doe"
+}];
+
 class App extends Component {
   render() {
     return (
@@ -11,7 +19,7 @@ class App extends Component {
           <h1 className="App-title">Peaches farmer in the USA</h1>
         </header>
         <Table 
-            url={'https://zrn2cbypo9.execute-api.us-west-2.amazonaws.com/TakeHome/fruit'} 
+            data={data}
           />
       </div>
     );

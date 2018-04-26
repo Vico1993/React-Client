@@ -7,22 +7,19 @@ import fetch from 'isomorphic-fetch'
 import './Table.css';
 import 'react-table/react-table.css'
 
-// Api to get Data
-const defaultURL = 'https://zrn2cbypo9.execute-api.us-west-2.amazonaws.com/TakeHome/fruit'
-
 class Table extends Component { 
     
-    constructor() {
-        super();
+    data = []
+    columns = []
+
+    constructor(props) {
+        super(props);
         
+        this.data = this.props.data
+        this.columns = this.props.columns
+
         this.state = {
-            dataTable: [],
-            loading: false,
-            columns: [{
-                Header: 'Favorites',
-                headerClassName: 'my-favorites-column-header-group',
-                columns: []
-            }]
+            loading: false
         }
     }
 
@@ -62,38 +59,21 @@ class Table extends Component {
         return columns;
     }
 
-    componentDidMount() {
-
-        // Set if we get some data
-        if ( typeof this.props.data !== "undefined" ) {
-            this.setState({dataTable: this.props.data})
-        }
-
-        // Set if we get some columns
-        if ( typeof this.props.columns !== "undefined" ) {
-            this.setState({columns: this.props.columns})
-        }
-
+    componentWillMount() {
         // if we have data
-        if ( this.state.dataTable.length > 0 ) {
-            if ( this.state.columns.length > 0 ) {
-                // And we have columns
+        if ( typeof this.props.data !== "undefined" && this.props.data.length > 0 ) {
+            if ( typeof this.props.columns !== "undefined" && this.props.columns.length > 0 ) {
                 return false;
             } else {
                 // Else let's build columns
-                this.setState({columns: this.BuildColumns( this.state.dataTable )})
+                this.columns = this.BuildColumns( Object.keys(this.data[0]) );
             }
         } else {
             // Else going to set default data
-            var url = defaultURL
-            if ( typeof this.props.url !== "undefined" && this.props.url !== "" ) {
-                url = this.props.url
-            } 
-
             this.setState({loading: true})
 
             // Loading data from the API
-            fetch(url)
+            fetch(this.props.url)
             .then(results => {
                 return results.json();
             }).then(data => {
@@ -106,10 +86,12 @@ class Table extends Component {
 
                     columns = this.BuildColumns( Object.keys(data[0]) );
                 } else {
-                    data = [];
-                }
+                    data = {};
+                }  
 
-                this.setState({dataTable: data, loading: false, columns: columns});
+                this.data = data;
+                this.columns = columns;
+                this.setState({loading: false});
             });
         }
     }
@@ -118,8 +100,8 @@ class Table extends Component {
         return (
             <div>
                 <ReactTable
-                    data={this.state.dataTable}
-                    columns={this.state.columns}
+                    data={this.data}
+                    columns={this.columns}
                     loading={this.state.loading}
                     filterable={true}
                 />
@@ -127,5 +109,12 @@ class Table extends Component {
         )
     }
 }
+
+// Default Props 
+Table.defaultProps = {
+    data: [],
+    columns: [],
+    url: 'https://zrn2cbypo9.execute-api.us-west-2.amazonaws.com/TakeHome/fruit'
+};
 
 export default Table;
