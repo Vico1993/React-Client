@@ -31,7 +31,7 @@ class Table extends Component {
         
         let columns = [];
 
-        if ( typeof data === Array || typeof data === Object ) {
+        if ( typeof data === "array" || typeof data === "object" ) {
             data.forEach((key, id)=>{
                 if ( key === 'location_1' ) {
                     columns.push({
