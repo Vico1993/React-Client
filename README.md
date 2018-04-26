@@ -1,8 +1,8 @@
-#React Client 
+# React Client 
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-#How to use ? 
+# How to use ? 
 
 First you need to install all this component. 
 
